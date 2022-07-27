@@ -1,11 +1,12 @@
 import React from "react";
+import { Container } from "react-bootstrap";
 import { Header } from "./Header";
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, isLoggedIn }) => {
   return (
     <div>
-      <Header />
-      {children}
+      <Header isLoggedIn={isLoggedIn} />
+      <Container>{children}</Container>
     </div>
   );
 };

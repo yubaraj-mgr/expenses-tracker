@@ -1,0 +1,53 @@
+###
+GET http://localhost:8000/api/v1/user
+
+
+#APIS
+
+###
+POST  http://localhost:8000/api/v1/user
+Content-Type: application/json
+
+{
+    "firstName": "sa",
+    "lastName": "fdsa",
+    "email": "fsfa",
+    "password": "dsfsd"
+}
+
+###
+POST  http://localhost:8000/api/v1/user/login
+Content-Type: application/json
+
+{
+    "email": "divya.100krk@gmail.com",
+    "password": "2"
+}
+
+
+###
+DELETE   http://localhost:8000/api/v1/user
+Content-Type: application/json
+
+{
+   "ids": ["62d7969272d5080932a7a45a", "62d7969572d5080932a7a45c"]
+}
+
+
+### transaction data
+### post new tranasaction 
+POST    http://localhost:8000/api/v1/transaction
+Content-Type: application/json
+
+{
+    "userId": "62d8ac76dfc6f2c876f10ba3",
+   "type": "income",
+   "title": "shopping shoes",
+   "amount": 333
+}
+
+
+### get all transaction for the speicfic use based on thier id
+### post new tranasaction 
+GET     http://localhost:8000/api/v1/user/transaction
+Authorization: 62d8ac76dfc6f2c876f10ba3

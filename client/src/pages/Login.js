@@ -1,22 +1,32 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../App.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
+import { loginUser } from "../helper/axiosHelper";
+import { toast } from "react-toastify";
 
 //   Uncontrolled field data means I don't have the power what's typing
 // we use uncontrolled filed when we have few fields and we don't care about the field, we only care what we get after the submit
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   // new hooks
   const emailRef = useRef();
   const passwordRef = useRef();
+  const navigate = useNavigate();
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    console.log(email, password);
+    const { status, message, user } = await loginUser({ email, password });
+    toast[status](message);
+    // to store data so that we know when user is logged in or when they are logged out
+    if (status === "success") {
+      window.localStorage.setItem("user", JSON.stringify(user));
+      setIsLoggedIn(true);
+      navigate("/dashboard");
+    }
   };
   return (
     <MainLayout>

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import "../App.css";
 import { Link } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
+import { toast } from "react-toastify";
+import { postNewUser } from "../helper/axiosHelper";
 
 // so that it won't re-render every time we call the register
 const initialObj = {
@@ -15,17 +18,31 @@ const initialObj = {
 };
 const Register = () => {
   const [form, setForm] = useState(initialObj);
+  // we set object here so that it won't throw undefined error while rendering
+  const [resp, setResp] = useState({});
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     console.log(form);
+
+    // simple javascirpt destructin to remove confirmpassword form the form and ...rest is the varaible consisitng of form except confirm password
+    const { confirmPassword, ...rest } = form;
+    if (confirmPassword !== rest.password) {
+      return alert("Password do not match");
+    }
+    // we are not destructing the data because we don't want to display the users on front end
+    const { status, message } = await postNewUser(rest);
+    console.log(status, message);
+    // toast[status] is so that status is a variable
+    toast[status](message);
+    setResp({ status, message });
     // reseting the form data so that when we submit form we get empty form
-    setForm(initialObj);
+    status === "success" && setForm(initialObj);
   };
   return (
     <MainLayout>
@@ -35,6 +52,14 @@ const Register = () => {
             <h3>Register Now</h3>
             <hr />
             <Form onSubmit={handleOnSubmit}>
+              {resp.message && (
+                <Alert
+                  variant={resp.status === "success" ? "success" : "danger"}
+                >
+                  {resp.message}
+                </Alert>
+              )}
+
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
