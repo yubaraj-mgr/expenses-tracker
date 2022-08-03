@@ -3,7 +3,7 @@ import express from "express";
 import { authMiddleware } from "./src/middlewares/authMiddleware.js";
 const app = express();
 import cors from "cors";
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 import path from "path";
 
 // db connect
