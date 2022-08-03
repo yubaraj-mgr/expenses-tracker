@@ -1,4 +1,5 @@
 import express from "express";
+import { authMiddleware } from "./src/middlewares/authMiddleware.js";
 const app = express();
 import cors from "cors";
 const PORT = 8000;
@@ -15,7 +16,8 @@ app.use(cors());
 import userRouter from "./src/routers/userRouter.js";
 import transactionRouter from "./src/routers/transactionRouter.js";
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/transaction", transactionRouter);
+
+app.use("/api/v1/transaction", authMiddleware, transactionRouter);
 
 // Server side rendering
 app.use("/", (req, res, next) => {
