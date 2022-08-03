@@ -1,24 +1,30 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { userLogoutAction } from "../../pages/userState/userActions";
 
-export const Header = ({ isLoggedIn }) => {
+export const Header = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { user } = useSelector((state) => state.user);
+
   const handleOnLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
+    // sessionStorage.removeItem("user");
+    dispatch(userLogoutAction());
+    navigate("/");
   };
   return (
     <Navbar bg="info" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">Expenses Tracker</Navbar.Brand>
+        <Navbar.Brand href="#">ET</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            {isLoggedIn ? (
-              <Nav.Link onClick={handleOnLogout}> Log Out</Nav.Link>
+            {user._id ? (
+              <Nav.Link onClick={handleOnLogout}>Logout</Nav.Link>
             ) : (
               <>
                 <Link to="/" className="nav-link">
