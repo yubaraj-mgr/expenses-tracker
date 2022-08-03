@@ -1,5 +1,6 @@
 import express from "express";
 import { authMiddleware } from "./src/middlewares/authMiddleware.js";
+import "dotenv/config";
 const app = express();
 import cors from "cors";
 const PORT = 8000;
